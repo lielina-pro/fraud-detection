@@ -93,7 +93,10 @@ class TestIpToInt:
         assert result.iloc[2] == 3232235777
 
     def test_invalid_ip_returns_nan(self):
-        series = pd.Series(["not_an_ip", "999.0.0.1"])
+        # "not_an_ip" has no dots -> invalid
+        # "999.0.0.1" has octet 999 > 255 -> invalid
+        # "1.2.3" has only 3 parts -> invalid
+        series = pd.Series(["not_an_ip", "999.0.0.1", "1.2.3"])
         result = ip_to_int(series)
         assert result.isna().all()
 
