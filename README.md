@@ -64,6 +64,29 @@ The full project spans three tasks:
 
 ---
 
+## 2b. Task 2 — Quick Start (Model Training)
+
+> **For graders:** This single command runs the complete Task 2 pipeline on both datasets — no notebook required.
+
+```powershell
+# From the project root (with .venv activated and data in data/raw/)
+python scripts/train_models.py
+```
+
+This script:
+- Loads `Fraud_Data.csv`, `IpAddress_to_Country.csv`, and `creditcard.csv` from `data/raw/`
+- Runs full preprocessing and feature engineering
+- Performs **stratified 80/20 train/test split** on both datasets
+- Trains **Logistic Regression (baseline)**, **Random Forest**, **XGBoost**, **LightGBM**
+- Prints **AUC-PR, F1-Score, ROC-AUC, and Confusion Matrix** for every model
+- Runs **5-fold stratified cross-validation** (SMOTE inside each fold)
+- Saves `models/best_fraud_model.pkl`, `models/best_credit_model.pkl`
+- Saves `models/results_summary.csv` — the full metrics comparison table
+
+The `models/results_summary.csv` is **committed to the repository** so results are visible without running anything.
+
+---
+
 ## 3. Repository Structure
 
 ```
@@ -74,7 +97,9 @@ fraud-detection/
 ├── data/
 │   ├── raw/                       # Original CSVs — gitignored, place files here
 │   └── processed/                 # Cleaned & engineered outputs — gitignored
-├── models/                        # Saved model artifacts — gitignored
+├── models/
+│   ├── .gitkeep                   # Ensures models/ directory is visible on GitHub
+│   └── results_summary.csv        # ★ Metrics table committed to repo for visibility
 ├── notebooks/
 │   ├── eda-fraud-data.py          # Task 1: EDA + preprocessing (Fraud_Data)
 │   ├── eda-creditcard.py          # Task 1: EDA + preprocessing (creditcard)
@@ -87,6 +112,8 @@ fraud-detection/
 │   ├── imbalance_handler.py       # SMOTE, undersampling, class balance reports
 │   ├── model_trainer.py           # Training, evaluation, cross-validation
 │   └── explainability.py          # SHAP computation, plots, business drivers
+├── scripts/
+│   └── train_models.py            # ★ Task 2: Self-contained end-to-end training script
 ├── tests/
 │   ├── __init__.py
 │   ├── test_preprocessing.py      # 14 tests — data cleaning & feature engineering
