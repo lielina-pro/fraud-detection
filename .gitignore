@@ -22,7 +22,7 @@ env/
 data/
 
 ## Models - large files
-models/
+#models/
 
 ## IDE
 .vscode/
